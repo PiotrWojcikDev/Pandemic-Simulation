@@ -1,0 +1,39 @@
+<div class="main-container">
+  <div class="control-panel">
+    <h2>Symulacja Pandemii - model SEIR</h2>
+    <div class="simulation-values">
+      <div class="initial-state">
+        <h3>Wartości początkowe</h3>
+        <p>Podatni (S): {{ initialState.susceptible }}</p>
+        <p>Eksponowani (E): {{ initialState.exposed }}</p>
+        <p>Zakaźni (I): {{ initialState.infectious }}</p>
+        <p>Ozdrowiali (R): {{ initialState.recovered }}</p>
+      </div>
+      <div class="coefficients-container">
+        <h3>Wylosowane współczynniki</h3>
+        <div>
+          <label>Beta (transmisja): {{ seirService.params.beta | number: '1.2-2' }}</label>
+        </div>
+        <div>
+          <label>Sigma (inkubacja): {{ seirService.params.sigma | number: '1.2-2' }}</label>
+        </div>
+        <div>
+          <label>Gamma (wyzdrowienie): {{ seirService.params.gamma | number: '1.2-2' }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="buttons-container">
+      <button *ngIf="!isSimulationRunning || isSimulationPaused" (click)="startSimulation()"
+        class="startButton">Start</button>
+      <button *ngIf="isSimulationRunning && !isSimulationPaused" (click)="stopSimulation()"
+        class="stopButton">Stop</button>
+      <button [disabled]="!isSimulationRunning" (click)="resetSimulation()" class="resetButton">Reset</button>
+    </div>
+  </div>
+  <div class="simulation-view">
+    <app-chart-view *ngIf="simulationView === 'chart-view'" [chartData]="chartData"
+      [chartOptions]="chartOptions"></app-chart-view>
+    <app-map-view *ngIf="simulationView === 'map-view'"></app-map-view>
+    <button (click)="toggleSimulationView()">Zmień widok</button>
+  </div>
+</div>
